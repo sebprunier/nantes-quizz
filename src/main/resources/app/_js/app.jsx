@@ -1,8 +1,9 @@
 import React from 'react'
-import { Router, Route, Link } from 'react-router'
+import { Router, Route, IndexRoute, Link } from 'react-router'
 import createBrowserHistory from 'history/lib/createBrowserHistory'
 
 import About from './pages/about'
+import Home from './pages/home'
 
 const App = React.createClass({
     render() {
@@ -26,6 +27,7 @@ React.render(
     (
         <Router history={createBrowserHistory()}>
             <Route path="/" component={App}>
+                <IndexRoute component={Home} />
                 <Route path="about" component={About} />
             </Route>
         </Router>

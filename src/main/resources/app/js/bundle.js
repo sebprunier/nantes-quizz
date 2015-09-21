@@ -69,6 +69,10 @@
 
 	var _pagesAbout2 = _interopRequireDefault(_pagesAbout);
 
+	var _pagesHome = __webpack_require__(215);
+
+	var _pagesHome2 = _interopRequireDefault(_pagesHome);
+
 	var App = _react2['default'].createClass({
 	    displayName: 'App',
 
@@ -109,6 +113,7 @@
 	    _react2['default'].createElement(
 	        _reactRouter.Route,
 	        { path: '/', component: App },
+	        _react2['default'].createElement(_reactRouter.IndexRoute, { component: _pagesHome2['default'] }),
 	        _react2['default'].createElement(_reactRouter.Route, { path: 'about', component: _pagesAbout2['default'] })
 	    )
 	), document.body);
@@ -25296,6 +25301,51 @@
 	});
 
 	module.exports = About;
+
+/***/ },
+/* 215 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var Home = _react2["default"].createClass({
+	    displayName: "Home",
+
+	    render: function render() {
+	        return _react2["default"].createElement(
+	            "div",
+	            { id: "about" },
+	            _react2["default"].createElement(
+	                "h2",
+	                null,
+	                "Choisissez une catégorie ..."
+	            ),
+	            _react2["default"].createElement(
+	                "p",
+	                null,
+	                "Photos"
+	            ),
+	            _react2["default"].createElement(
+	                "p",
+	                null,
+	                "Quartiers"
+	            ),
+	            _react2["default"].createElement(
+	                "p",
+	                null,
+	                "Population"
+	            )
+	        );
+	    }
+	});
+
+	module.exports = Home;
 
 /***/ }
 /******/ ]);
