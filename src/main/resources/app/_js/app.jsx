@@ -24,7 +24,7 @@ injectTapEventPlugin();
 
 let menuItems = [
     {type: MenuItem.Types.SUBHEADER, text: 'Nantes Quizz'},
-    {route: '/', text: 'Home'},
+    {route: '/', text: 'Je veux jouer !'},
     {route: '/about', text: 'A propos'},
     {type: MenuItem.Types.SUBHEADER, text: 'Liens utiles'},
     {
@@ -37,8 +37,10 @@ let menuItems = [
 
 const App = React.createClass({
     mixins: [History],
-    getChildContext() {
+    componentWillMount() {
         ThemeManager.setTheme(CustomTheme);
+    },
+    getChildContext() {
         return {
             muiTheme: ThemeManager.getCurrentTheme()
         };

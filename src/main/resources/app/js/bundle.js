@@ -95,7 +95,7 @@
 	//https://github.com/zilverline/react-tap-event-plugin
 	injectTapEventPlugin();
 
-	var menuItems = [{ type: MenuItem.Types.SUBHEADER, text: 'Nantes Quizz' }, { route: '/', text: 'Home' }, { route: '/about', text: 'A propos' }, { type: MenuItem.Types.SUBHEADER, text: 'Liens utiles' }, {
+	var menuItems = [{ type: MenuItem.Types.SUBHEADER, text: 'Nantes Quizz' }, { route: '/', text: 'Je veux jouer !' }, { route: '/about', text: 'A propos' }, { type: MenuItem.Types.SUBHEADER, text: 'Liens utiles' }, {
 	    type: MenuItem.Types.LINK,
 	    payload: 'https://github.com/sebprunier/nantes-quizz',
 	    text: 'Nantes Quizz on GitHub',
@@ -106,8 +106,10 @@
 	    displayName: 'App',
 
 	    mixins: [_reactRouter.History],
-	    getChildContext: function getChildContext() {
+	    componentWillMount: function componentWillMount() {
 	        ThemeManager.setTheme(_themesCustom2['default']);
+	    },
+	    getChildContext: function getChildContext() {
 	        return {
 	            muiTheme: ThemeManager.getCurrentTheme()
 	        };
@@ -45766,7 +45768,7 @@
 	            "div",
 	            { id: "about" },
 	            _react2["default"].createElement(
-	                "h2",
+	                "h1",
 	                null,
 	                "About"
 	            ),
@@ -45785,44 +45787,105 @@
 /* 369 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 	var _react = __webpack_require__(2);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var Home = _react2["default"].createClass({
-	    displayName: "Home",
+	var _materialUi = __webpack_require__(214);
 
+	var _materialUi2 = _interopRequireDefault(_materialUi);
+
+	var _themesCustom = __webpack_require__(370);
+
+	var _themesCustom2 = _interopRequireDefault(_themesCustom);
+
+	var Card = _materialUi2['default'].Card;
+	var CardTitle = _materialUi2['default'].CardTitle;
+	var CardActions = _materialUi2['default'].CardActions;
+	var RaisedButton = _materialUi2['default'].RaisedButton;
+
+	var ThemeManager = new _materialUi2['default'].Styles.ThemeManager();
+
+	var Home = _react2['default'].createClass({
+	    displayName: 'Home',
+
+	    componentWillMount: function componentWillMount() {
+	        ThemeManager.setTheme(_themesCustom2['default']);
+	    },
+	    getChildContext: function getChildContext() {
+	        return {
+	            muiTheme: ThemeManager.getCurrentTheme()
+	        };
+	    },
 	    render: function render() {
-	        return _react2["default"].createElement(
-	            "div",
-	            { id: "about" },
-	            _react2["default"].createElement(
-	                "h2",
+	        return _react2['default'].createElement(
+	            'div',
+	            { id: 'home' },
+	            _react2['default'].createElement(
+	                'h1',
 	                null,
-	                "Choisissez une catégorie ..."
+	                'Choisissez une catégorie ...'
 	            ),
-	            _react2["default"].createElement(
-	                "p",
-	                null,
-	                "Photos"
-	            ),
-	            _react2["default"].createElement(
-	                "p",
-	                null,
-	                "Quartiers"
-	            ),
-	            _react2["default"].createElement(
-	                "p",
-	                null,
-	                "Population"
+	            _react2['default'].createElement(
+	                'div',
+	                { id: 'categories', className: 'pure-g' },
+	                _react2['default'].createElement(
+	                    'div',
+	                    { className: 'pure-u-1 pure-u-md-1-3' },
+	                    _react2['default'].createElement(
+	                        Card,
+	                        { className: 'category' },
+	                        _react2['default'].createElement(CardTitle, { title: 'Photographies', subtitle: 'Vous devez trouver à quel monument de Nantes correspond la photo' }),
+	                        _react2['default'].createElement('img', { src: 'img/1a237e-slr-camera-128.png' }),
+	                        _react2['default'].createElement(
+	                            CardActions,
+	                            null,
+	                            _react2['default'].createElement(RaisedButton, { label: 'J\'ai une mémoire visuelle sans faille !', primary: true })
+	                        )
+	                    )
+	                ),
+	                _react2['default'].createElement(
+	                    'div',
+	                    { className: 'pure-u-1 pure-u-md-1-3' },
+	                    _react2['default'].createElement(
+	                        Card,
+	                        { className: 'category' },
+	                        _react2['default'].createElement(CardTitle, { title: 'Quartiers', subtitle: 'Vous devez trouver à quel quartier correspond le marqueur sur la carte' }),
+	                        _react2['default'].createElement('img', { src: 'img/1a237e-map-marker-128.png' }),
+	                        _react2['default'].createElement(
+	                            CardActions,
+	                            null,
+	                            _react2['default'].createElement(RaisedButton, { label: 'La géographie nantaise ça me connait !', primary: true })
+	                        )
+	                    )
+	                ),
+	                _react2['default'].createElement(
+	                    'div',
+	                    { className: 'pure-u-1 pure-u-md-1-3' },
+	                    _react2['default'].createElement(
+	                        Card,
+	                        { className: 'category' },
+	                        _react2['default'].createElement(CardTitle, { title: 'Population', subtitle: 'Vous devez être calé sur la démographie nantaise :-)' }),
+	                        _react2['default'].createElement('img', { src: 'img/1a237e-contacts-128.png' }),
+	                        _react2['default'].createElement(
+	                            CardActions,
+	                            null,
+	                            _react2['default'].createElement(RaisedButton, { label: 'Le nombre d\'habitants à Nantes ? Facile !', primary: true })
+	                        )
+	                    )
+	                )
 	            )
 	        );
 	    }
 	});
+
+	Home.childContextTypes = {
+	    muiTheme: _react2['default'].PropTypes.object
+	};
 
 	module.exports = Home;
 

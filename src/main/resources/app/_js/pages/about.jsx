@@ -4,7 +4,7 @@ const About = React.createClass({
     render() {
         return (
             <div id="about">
-                <h2>About</h2>
+                <h1>About</h1>
                 <p>
                     Bla bla bla ...
                 </p>

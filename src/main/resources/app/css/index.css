@@ -1,6 +1,6 @@
 html {
     font-family: 'Roboto', sans-serif;
-    background: url('../img/background_light.jpg') no-repeat center center fixed;
+    background: url('../img/background.jpg') no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -9,4 +9,19 @@ html {
 
 body {
     margin: 0;
+}
+
+h1 {
+    color: white;
+    font-weight: 400;
+    font-size: 4em;
+    text-shadow: 2px 2px 8px #1a237e;
+}
+
+#home, #about {
+    text-align: center;
+}
+
+.category {
+    margin: 16px;
 }
