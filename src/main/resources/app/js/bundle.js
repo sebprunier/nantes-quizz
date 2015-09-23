@@ -77,13 +77,17 @@
 
 	var _pagesHome2 = _interopRequireDefault(_pagesHome);
 
+	var _themesCustom = __webpack_require__(370);
+
+	var _themesCustom2 = _interopRequireDefault(_themesCustom);
+
 	var AppBar = _materialUi2['default'].AppBar;
 	var LeftNav = _materialUi2['default'].LeftNav;
 	var MenuItem = _materialUi2['default'].MenuItem;
 	var FontIcon = _materialUi2['default'].FontIcon;
 	var ThemeManager = new _materialUi2['default'].Styles.ThemeManager();
 
-	var injectTapEventPlugin = __webpack_require__(370);
+	var injectTapEventPlugin = __webpack_require__(371);
 
 	//Needed for onTouchTap
 	//Can go away when react 1.0 release
@@ -91,13 +95,19 @@
 	//https://github.com/zilverline/react-tap-event-plugin
 	injectTapEventPlugin();
 
-	var menuItems = [{ route: '', text: 'Home' }, { route: 'about', text: 'A propos' }];
+	var menuItems = [{ type: MenuItem.Types.SUBHEADER, text: 'Nantes Quizz' }, { route: '/', text: 'Home' }, { route: '/about', text: 'A propos' }, { type: MenuItem.Types.SUBHEADER, text: 'Liens utiles' }, {
+	    type: MenuItem.Types.LINK,
+	    payload: 'https://github.com/sebprunier/nantes-quizz',
+	    text: 'Nantes Quizz on GitHub',
+	    target: '_blank'
+	}];
 
 	var App = _react2['default'].createClass({
 	    displayName: 'App',
 
 	    mixins: [_reactRouter.History],
 	    getChildContext: function getChildContext() {
+	        ThemeManager.setTheme(_themesCustom2['default']);
 	        return {
 	            muiTheme: ThemeManager.getCurrentTheme()
 	        };
@@ -107,7 +117,7 @@
 	        this.refs.leftNav.toggle();
 	    },
 	    onLeftNavChange: function onLeftNavChange(e, key, payload) {
-	        this.history.pushState(null, '/' + payload.route, null);
+	        this.history.pushState(null, payload.route, null);
 	    },
 	    render: function render() {
 	        return _react2['default'].createElement(
@@ -45820,19 +45830,250 @@
 /* 370 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _materialUi = __webpack_require__(214);
+
+	var _materialUi2 = _interopRequireDefault(_materialUi);
+
+	var Colors = _materialUi2['default'].Styles.Colors;
+	var Spacing = _materialUi2['default'].Styles.Spacing;
+	var ColorManipulator = _materialUi2['default'].Utils.ColorManipulator;
+
+	var CustomTheme = {
+	    spacing: Spacing,
+	    contentFontFamily: 'Roboto, sans-serif',
+	    getPalette: function getPalette() {
+	        return {
+	            primary1Color: Colors.indigo900,
+	            primary2Color: Colors.indigo600,
+	            primary3Color: Colors.indigo300,
+	            accent1Color: Colors.amber600,
+	            accent2Color: Colors.amber400,
+	            accent3Color: Colors.amber200,
+	            textColor: Colors.darkBlack,
+	            canvasColor: Colors.white,
+	            borderColor: Colors.grey300,
+	            disabledColor: ColorManipulator.fade(Colors.darkBlack, 0.3)
+	        };
+	    },
+	    getComponentThemes: function getComponentThemes(palette, spacing) {
+	        spacing = spacing || Spacing;
+	        var obj = {
+	            appBar: {
+	                color: palette.primary1Color,
+	                textColor: Colors.darkWhite,
+	                height: spacing.desktopKeylineIncrement
+	            },
+	            avatar: {
+	                borderColor: 'rgba(0, 0, 0, 0.08)'
+	            },
+	            button: {
+	                height: 36,
+	                minWidth: 88,
+	                iconButtonSize: spacing.iconSize * 2
+	            },
+	            checkbox: {
+	                boxColor: palette.textColor,
+	                checkedColor: palette.primary1Color,
+	                requiredColor: palette.primary1Color,
+	                disabledColor: palette.disabledColor,
+	                labelColor: palette.textColor,
+	                labelDisabledColor: palette.disabledColor
+	            },
+	            datePicker: {
+	                color: palette.primary1Color,
+	                textColor: Colors.white,
+	                calendarTextColor: palette.textColor,
+	                selectColor: palette.primary2Color,
+	                selectTextColor: Colors.white
+	            },
+	            dropDownMenu: {
+	                accentColor: palette.borderColor
+	            },
+	            flatButton: {
+	                color: palette.canvasColor,
+	                textColor: palette.textColor,
+	                primaryTextColor: palette.accent1Color,
+	                secondaryTextColor: palette.primary1Color
+	            },
+	            floatingActionButton: {
+	                buttonSize: 56,
+	                miniSize: 40,
+	                color: palette.accent1Color,
+	                iconColor: Colors.white,
+	                secondaryColor: palette.primary1Color,
+	                secondaryIconColor: Colors.white
+	            },
+	            inkBar: {
+	                backgroundColor: palette.accent1Color
+	            },
+	            leftNav: {
+	                width: spacing.desktopKeylineIncrement * 4,
+	                color: Colors.white
+	            },
+	            listItem: {
+	                nestedLevelDepth: 18
+	            },
+	            menu: {
+	                backgroundColor: Colors.white,
+	                containerBackgroundColor: Colors.white
+	            },
+	            menuItem: {
+	                dataHeight: 32,
+	                height: 48,
+	                hoverColor: 'rgba(0, 0, 0, .035)',
+	                padding: spacing.desktopGutter,
+	                selectedTextColor: palette.accent1Color
+	            },
+	            menuSubheader: {
+	                padding: spacing.desktopGutter,
+	                borderColor: palette.borderColor,
+	                textColor: palette.primary1Color
+	            },
+	            paper: {
+	                backgroundColor: Colors.white
+	            },
+	            radioButton: {
+	                borderColor: palette.textColor,
+	                backgroundColor: Colors.white,
+	                checkedColor: palette.primary1Color,
+	                requiredColor: palette.primary1Color,
+	                disabledColor: palette.disabledColor,
+	                size: 24,
+	                labelColor: palette.textColor,
+	                labelDisabledColor: palette.disabledColor
+	            },
+	            raisedButton: {
+	                color: Colors.white,
+	                textColor: palette.textColor,
+	                primaryColor: palette.accent1Color,
+	                primaryTextColor: Colors.white,
+	                secondaryColor: palette.primary1Color,
+	                secondaryTextColor: Colors.white
+	            },
+	            refreshIndicator: {
+	                strokeColor: Colors.grey300,
+	                loadingStrokeColor: palette.primary1Color
+	            },
+	            slider: {
+	                trackSize: 2,
+	                trackColor: Colors.minBlack,
+	                trackColorSelected: Colors.grey500,
+	                handleSize: 12,
+	                handleSizeDisabled: 8,
+	                handleSizeActive: 18,
+	                handleColorZero: Colors.grey400,
+	                handleFillColor: Colors.white,
+	                selectionColor: palette.primary3Color,
+	                rippleColor: palette.primary1Color
+	            },
+	            snackbar: {
+	                textColor: Colors.white,
+	                backgroundColor: '#323232',
+	                actionColor: palette.accent1Color
+	            },
+	            table: {
+	                backgroundColor: Colors.white
+	            },
+	            tableHeader: {
+	                borderColor: palette.borderColor
+	            },
+	            tableHeaderColumn: {
+	                textColor: Colors.lightBlack,
+	                height: 56,
+	                spacing: 24
+	            },
+	            tableFooter: {
+	                borderColor: palette.borderColor,
+	                textColor: Colors.lightBlack
+	            },
+	            tableRow: {
+	                hoverColor: Colors.grey200,
+	                stripeColor: ColorManipulator.lighten(palette.primary1Color, 0.55),
+	                selectedColor: Colors.grey300,
+	                textColor: Colors.darkBlack,
+	                borderColor: palette.borderColor
+	            },
+	            tableRowColumn: {
+	                height: 48,
+	                spacing: 24
+	            },
+	            timePicker: {
+	                color: Colors.white,
+	                textColor: Colors.grey600,
+	                accentColor: palette.primary1Color,
+	                clockColor: Colors.black,
+	                selectColor: palette.primary2Color,
+	                selectTextColor: Colors.white
+	            },
+	            toggle: {
+	                thumbOnColor: palette.primary1Color,
+	                thumbOffColor: Colors.grey50,
+	                thumbDisabledColor: Colors.grey400,
+	                thumbRequiredColor: palette.primary1Color,
+	                trackOnColor: ColorManipulator.fade(palette.primary1Color, 0.5),
+	                trackOffColor: Colors.minBlack,
+	                trackDisabledColor: Colors.faintBlack,
+	                labelColor: palette.textColor,
+	                labelDisabledColor: palette.disabledColor
+	            },
+	            toolbar: {
+	                backgroundColor: ColorManipulator.darken('#eeeeee', 0.05),
+	                height: 56,
+	                titleFontSize: 20,
+	                iconColor: 'rgba(0, 0, 0, .40)',
+	                separatorColor: 'rgba(0, 0, 0, .175)',
+	                menuHoverColor: 'rgba(0, 0, 0, .10)'
+	            },
+	            tabs: {
+	                backgroundColor: palette.primary1Color
+	            },
+	            textField: {
+	                textColor: palette.textColor,
+	                hintColor: palette.disabledColor,
+	                floatingLabelColor: palette.textColor,
+	                disabledTextColor: palette.disabledColor,
+	                errorColor: Colors.red500,
+	                focusColor: palette.primary1Color,
+	                backgroundColor: 'transparent',
+	                borderColor: palette.borderColor
+	            }
+	        };
+
+	        // Properties based on previous properties
+	        obj.flatButton.disabledTextColor = ColorManipulator.fade(obj.flatButton.textColor, 0.3);
+	        obj.floatingActionButton.disabledColor = ColorManipulator.darken(Colors.white, 0.1);
+	        obj.floatingActionButton.disabledTextColor = ColorManipulator.fade(palette.textColor, 0.3);
+	        obj.raisedButton.disabledColor = ColorManipulator.darken(obj.raisedButton.color, 0.1);
+	        obj.raisedButton.disabledTextColor = ColorManipulator.fade(obj.raisedButton.textColor, 0.3);
+	        obj.toggle.trackRequiredColor = ColorManipulator.fade(obj.toggle.thumbRequiredColor, 0.5);
+
+	        return obj;
+	    }
+	};
+
+	module.exports = CustomTheme;
+
+/***/ },
+/* 371 */
+/***/ function(module, exports, __webpack_require__) {
+
 	module.exports = function injectTapEventPlugin () {
 	  var React = __webpack_require__(2);
 	  React.initializeTouchEvents(true);
 
 	  __webpack_require__(70).injection.injectEventPluginsByName({
-	    "ResponderEventPlugin": __webpack_require__(371),
-	    "TapEventPlugin":       __webpack_require__(372)
+	    "ResponderEventPlugin": __webpack_require__(372),
+	    "TapEventPlugin":       __webpack_require__(373)
 	  });
 	};
 
 
 /***/ },
-/* 371 */
+/* 372 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -46147,7 +46388,7 @@
 
 
 /***/ },
-/* 372 */
+/* 373 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -46175,7 +46416,7 @@
 	var EventPluginUtils = __webpack_require__(5);
 	var EventPropagators = __webpack_require__(94);
 	var SyntheticUIEvent = __webpack_require__(107);
-	var TouchEventUtils = __webpack_require__(373);
+	var TouchEventUtils = __webpack_require__(374);
 	var ViewportMetrics = __webpack_require__(75);
 
 	var keyOf = __webpack_require__(40);
@@ -46319,7 +46560,7 @@
 
 
 /***/ },
-/* 373 */
+/* 374 */
 /***/ function(module, exports) {
 
 	/**
