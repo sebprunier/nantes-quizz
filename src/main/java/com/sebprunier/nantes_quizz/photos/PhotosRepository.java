@@ -6,6 +6,7 @@ import com.drew.metadata.Metadata;
 import com.drew.metadata.Tag;
 
 import javax.inject.Singleton;
+import java.security.MessageDigest;
 import java.util.*;
 
 @Singleton
@@ -30,6 +31,18 @@ public class PhotosRepository {
                     }
                 }
             }
+
+            MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+            messageDigest.update(photoInfo.getDetails().getBytes());
+            byte bytes[] = messageDigest.digest();
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : bytes) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+            photoInfo.setHash(hexString.toString());
+
             PHOTOS_INFOS.put(photoId, photoInfo);
         }
     }
@@ -42,6 +55,10 @@ public class PhotosRepository {
                 PHOTOS_INFOS.get(photosId.get(1)),
                 PHOTOS_INFOS.get(photosId.get(2))
         );
+    }
+
+    public PhotoInfo getById(String id) {
+        return PHOTOS_INFOS.get(id);
     }
 
     private static final String[] PHOTOS = new String[]{

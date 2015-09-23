@@ -10,6 +10,7 @@ public class PhotoInfo {
 
     private String credit;
 
+    private String hash;
 
     public PhotoInfo(String id) {
         this.id = id;
@@ -31,6 +32,10 @@ public class PhotoInfo {
         return credit;
     }
 
+    public String getHash() {
+        return hash;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -41,6 +46,10 @@ public class PhotoInfo {
 
     public void setCredit(String credit) {
         this.credit = credit;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
     }
 
     @Override
