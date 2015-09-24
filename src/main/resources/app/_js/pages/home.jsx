@@ -24,7 +24,7 @@ const Home = React.createClass({
             <div id="home">
                 <h1>Choisissez une catégorie ...</h1>
                 <div id="categories" className="pure-g">
-                    <div className="pure-u-1 pure-u-md-1-3">
+                    <div className="pure-u-1 pure-u-md-1-2">
                         <Card className="category">
                             <CardTitle title="Photographies" subtitle="Vous devez trouver à quel monument de Nantes correspond la photo"/>
                             <img src="img/1a237e-slr-camera-128.png"/>
@@ -35,7 +35,7 @@ const Home = React.createClass({
                             </CardActions>
                         </Card>
                     </div>
-                    <div className="pure-u-1 pure-u-md-1-3">
+                    <div className="pure-u-1 pure-u-md-1-2">
                         <Card className="category">
                             <CardTitle title="Quartiers" subtitle="Vous devez trouver à quel quartier correspond le marqueur sur la carte"/>
                             <img src="img/1a237e-map-marker-128.png"/>
@@ -44,6 +44,7 @@ const Home = React.createClass({
                             </CardActions>
                         </Card>
                     </div>
+                    {/*
                     <div className="pure-u-1 pure-u-md-1-3">
                         <Card className="category">
                             <CardTitle title="Population" subtitle="Vous devez être calé sur la démographie nantaise :-)"/>
@@ -53,6 +54,7 @@ const Home = React.createClass({
                             </CardActions>
                         </Card>
                     </div>
+                    */}
                 </div>
             </div>
         )

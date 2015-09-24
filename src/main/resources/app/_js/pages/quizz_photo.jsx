@@ -56,9 +56,9 @@ const PhotoQuizz = React.createClass({
                 } else {
                     return (
                         <div className="result-ko">
-                            Mauvaise réponse !
+                            Mauvaise réponse ! La bonne réponse est :
                             <br />
-                            La bonne réponse est : <i>{that.state.quizzResult.correctOption}</i>
+                            <i>{that.state.quizzResult.correctOption}</i>
                         </div>
                     )
                 }

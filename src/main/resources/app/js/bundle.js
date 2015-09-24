@@ -45854,7 +45854,7 @@
 	                { id: 'categories', className: 'pure-g' },
 	                _react2['default'].createElement(
 	                    'div',
-	                    { className: 'pure-u-1 pure-u-md-1-3' },
+	                    { className: 'pure-u-1 pure-u-md-1-2' },
 	                    _react2['default'].createElement(
 	                        Card,
 	                        { className: 'category' },
@@ -45873,7 +45873,7 @@
 	                ),
 	                _react2['default'].createElement(
 	                    'div',
-	                    { className: 'pure-u-1 pure-u-md-1-3' },
+	                    { className: 'pure-u-1 pure-u-md-1-2' },
 	                    _react2['default'].createElement(
 	                        Card,
 	                        { className: 'category' },
@@ -45883,21 +45883,6 @@
 	                            CardActions,
 	                            null,
 	                            _react2['default'].createElement(RaisedButton, { label: 'La géographie nantaise ça me connait !', primary: true })
-	                        )
-	                    )
-	                ),
-	                _react2['default'].createElement(
-	                    'div',
-	                    { className: 'pure-u-1 pure-u-md-1-3' },
-	                    _react2['default'].createElement(
-	                        Card,
-	                        { className: 'category' },
-	                        _react2['default'].createElement(CardTitle, { title: 'Population', subtitle: 'Vous devez être calé sur la démographie nantaise :-)' }),
-	                        _react2['default'].createElement('img', { src: 'img/1a237e-contacts-128.png' }),
-	                        _react2['default'].createElement(
-	                            CardActions,
-	                            null,
-	                            _react2['default'].createElement(RaisedButton, { label: 'Le nombre d\'habitants à Nantes ? Facile !', primary: true })
 	                        )
 	                    )
 	                )
@@ -45911,6 +45896,17 @@
 	};
 
 	module.exports = Home;
+	/*
+	<div className="pure-u-1 pure-u-md-1-3">
+	   <Card className="category">
+	       <CardTitle title="Population" subtitle="Vous devez être calé sur la démographie nantaise :-)"/>
+	       <img src="img/1a237e-contacts-128.png"/>
+	       <CardActions>
+	           <RaisedButton label="Le nombre d'habitants à Nantes ? Facile !" primary={true} />
+	       </CardActions>
+	   </Card>
+	</div>
+	*/
 
 /***/ },
 /* 370 */
@@ -46227,9 +46223,8 @@
 	                    return _react2['default'].createElement(
 	                        'div',
 	                        { className: 'result-ko' },
-	                        'Mauvaise réponse !',
+	                        'Mauvaise réponse ! La bonne réponse est :',
 	                        _react2['default'].createElement('br', null),
-	                        'La bonne réponse est : ',
 	                        _react2['default'].createElement(
 	                            'i',
 	                            null,
