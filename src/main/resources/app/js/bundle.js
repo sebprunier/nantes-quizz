@@ -81,6 +81,10 @@
 
 	var _pagesQuizz_photo2 = _interopRequireDefault(_pagesQuizz_photo);
 
+	var _pagesQuizz_district = __webpack_require__(385);
+
+	var _pagesQuizz_district2 = _interopRequireDefault(_pagesQuizz_district);
+
 	var _themesCustom = __webpack_require__(370);
 
 	var _themesCustom2 = _interopRequireDefault(_themesCustom);
@@ -91,7 +95,7 @@
 	var FontIcon = _materialUi2['default'].FontIcon;
 	var ThemeManager = new _materialUi2['default'].Styles.ThemeManager();
 
-	var injectTapEventPlugin = __webpack_require__(385);
+	var injectTapEventPlugin = __webpack_require__(398);
 
 	//Needed for onTouchTap
 	//Can go away when react 1.0 release
@@ -160,7 +164,8 @@
 	        { path: '/', component: App },
 	        _react2['default'].createElement(_reactRouter.IndexRoute, { component: _pagesHome2['default'] }),
 	        _react2['default'].createElement(_reactRouter.Route, { path: 'about', component: _pagesAbout2['default'] }),
-	        _react2['default'].createElement(_reactRouter.Route, { path: 'quizz/photo', component: _pagesQuizz_photo2['default'] })
+	        _react2['default'].createElement(_reactRouter.Route, { path: 'quizz/photo', component: _pagesQuizz_photo2['default'] }),
+	        _react2['default'].createElement(_reactRouter.Route, { path: 'quizz/district', component: _pagesQuizz_district2['default'] })
 	    )
 	), document.body);
 
@@ -45882,7 +45887,11 @@
 	                        _react2['default'].createElement(
 	                            CardActions,
 	                            null,
-	                            _react2['default'].createElement(RaisedButton, { label: 'La géographie nantaise ça me connait !', primary: true })
+	                            _react2['default'].createElement(
+	                                _reactRouter.Link,
+	                                { to: '/quizz/district' },
+	                                _react2['default'].createElement(RaisedButton, { label: 'La géographie nantaise ça me connait !', primary: true })
+	                            )
 	                        )
 	                    )
 	                )
@@ -47224,19 +47233,711 @@
 /* 385 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _axios = __webpack_require__(372);
+
+	var _axios2 = _interopRequireDefault(_axios);
+
+	var _materialUi = __webpack_require__(214);
+
+	var _materialUi2 = _interopRequireDefault(_materialUi);
+
+	var _themesCustom = __webpack_require__(370);
+
+	var _themesCustom2 = _interopRequireDefault(_themesCustom);
+
+	var _reactGmaps = __webpack_require__(386);
+
+	var Card = _materialUi2['default'].Card;
+	var RadioButtonGroup = _materialUi2['default'].RadioButtonGroup;
+	var RadioButton = _materialUi2['default'].RadioButton;
+	var RaisedButton = _materialUi2['default'].RaisedButton;
+	var FlatButton = _materialUi2['default'].FlatButton;
+
+	var ThemeManager = new _materialUi2['default'].Styles.ThemeManager();
+
+	var DistrictQuizz = _react2['default'].createClass({
+	    displayName: 'DistrictQuizz',
+
+	    componentWillMount: function componentWillMount() {
+	        ThemeManager.setTheme(_themesCustom2['default']);
+	    },
+	    getChildContext: function getChildContext() {
+	        return {
+	            muiTheme: ThemeManager.getCurrentTheme()
+	        };
+	    },
+	    getInitialState: function getInitialState() {
+	        return {
+	            quizz: null,
+	            quizzResult: null
+	        };
+	    },
+	    componentDidMount: function componentDidMount() {
+	        this._loadNewQuizz();
+	    },
+	    render: function render() {
+	        var that = this;
+	        var renderActions = function renderActions() {
+	            if (!that.state.quizzResult) {
+	                return _react2['default'].createElement(
+	                    'div',
+	                    null,
+	                    _react2['default'].createElement(
+	                        'div',
+	                        { id: 'action-validate' },
+	                        _react2['default'].createElement(RaisedButton, { label: 'Valider ma réponse !', primary: true, onClick: that._validateQuizz })
+	                    ),
+	                    _react2['default'].createElement(
+	                        'div',
+	                        { id: 'action-change' },
+	                        _react2['default'].createElement(FlatButton, { label: 'Changer de question ...', primary: true, onClick: that._loadNewQuizz })
+	                    )
+	                );
+	            }
+	        };
+	        var renderResult = function renderResult() {
+	            var renderMessage = function renderMessage() {
+	                if (that.state.quizzResult.result) {
+	                    return _react2['default'].createElement(
+	                        'div',
+	                        { className: 'result-ok' },
+	                        'Bonne réponse !'
+	                    );
+	                } else {
+	                    return _react2['default'].createElement(
+	                        'div',
+	                        { className: 'result-ko' },
+	                        'Mauvaise réponse !'
+	                    );
+	                }
+	            };
+	            if (that.state.quizzResult) {
+	                return _react2['default'].createElement(
+	                    'div',
+	                    null,
+	                    _react2['default'].createElement(
+	                        'div',
+	                        null,
+	                        renderMessage()
+	                    ),
+	                    _react2['default'].createElement(
+	                        'div',
+	                        { id: 'action-new' },
+	                        _react2['default'].createElement(RaisedButton, { label: 'Nouvelle question !', primary: true, onClick: that._loadNewQuizz })
+	                    )
+	                );
+	            }
+	        };
+
+	        if (!this.state.quizz) {
+	            return _react2['default'].createElement(
+	                'div',
+	                { id: 'quizz-photo' },
+	                _react2['default'].createElement(
+	                    'h1',
+	                    null,
+	                    'Quartiers'
+	                )
+	            );
+	        } else {
+	            return _react2['default'].createElement(
+	                'div',
+	                { id: 'quizz-photo' },
+	                _react2['default'].createElement(
+	                    'h1',
+	                    null,
+	                    'Quartiers'
+	                ),
+	                _react2['default'].createElement(
+	                    Card,
+	                    { className: 'quizz-photo-card' },
+	                    _react2['default'].createElement(
+	                        'div',
+	                        { className: 'pure-g' },
+	                        _react2['default'].createElement(
+	                            'div',
+	                            { className: 'pure-u-1 pure-u-md-1-2' },
+	                            _react2['default'].createElement(
+	                                _reactGmaps.Gmaps,
+	                                {
+	                                    width: '800px',
+	                                    height: '600px',
+	                                    lat: 47.2172500,
+	                                    lng: -1.5533600,
+	                                    zoom: 12,
+	                                    loadingMessage: 'Chargement ...' },
+	                                _react2['default'].createElement(_reactGmaps.Marker, {
+	                                    lat: parseFloat(this.state.quizz.districtInfoLat),
+	                                    lng: parseFloat(this.state.quizz.districtInfoLon),
+	                                    draggable: false })
+	                            )
+	                        ),
+	                        _react2['default'].createElement(
+	                            'div',
+	                            { className: 'pure-u-1 pure-u-md-1-2' },
+	                            _react2['default'].createElement(
+	                                'h2',
+	                                null,
+	                                'Quel est ce quartier ?'
+	                            ),
+	                            _react2['default'].createElement(
+	                                'div',
+	                                { id: 'choices' },
+	                                _react2['default'].createElement(
+	                                    RadioButtonGroup,
+	                                    { name: 'districts', onChange: this._handleRadioChange },
+	                                    _react2['default'].createElement(RadioButton, {
+	                                        value: this.state.quizz.id1,
+	                                        label: this.state.quizz.nom1,
+	                                        style: { marginBottom: 16 },
+	                                        disabled: this.state.quizzResult }),
+	                                    _react2['default'].createElement(RadioButton, {
+	                                        value: this.state.quizz.id2,
+	                                        label: this.state.quizz.nom2,
+	                                        style: { marginBottom: 16 },
+	                                        disabled: this.state.quizzResult }),
+	                                    _react2['default'].createElement(RadioButton, {
+	                                        value: this.state.quizz.id3,
+	                                        label: this.state.quizz.nom3,
+	                                        style: { marginBottom: 16 },
+	                                        disabled: this.state.quizzResult })
+	                                )
+	                            ),
+	                            renderActions(),
+	                            renderResult()
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    },
+	    _loadNewQuizz: function _loadNewQuizz() {
+	        var _this = this;
+
+	        _axios2['default'].get('/api/quizz/district/new').then(function (quizz) {
+	            return _this.setState({
+	                quizz: quizz.data,
+	                quizzResult: null,
+	                selectedOption: null
+	            });
+	        });
+	    },
+	    _handleRadioChange: function _handleRadioChange(event) {
+	        this.setState({ selectedOption: event.target.value });
+	    },
+	    _validateQuizz: function _validateQuizz() {
+	        var _this2 = this;
+
+	        _axios2['default'].post('/api/quizz/district/check', {
+	            "districtInfoLat": this.state.quizz.districtInfoLat,
+	            "districtInfoLon": this.state.quizz.districtInfoLon,
+	            "proposal": this.state.selectedOption
+	        }).then(function (result) {
+	            return _this2.setState({ quizzResult: result.data });
+	        });
+	    }
+	});
+
+	DistrictQuizz.childContextTypes = {
+	    muiTheme: _react2['default'].PropTypes.object
+	};
+
+	module.exports = DistrictQuizz;
+
+/***/ },
+/* 386 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _componentsGmaps = __webpack_require__(387);
+
+	var _componentsGmaps2 = _interopRequireDefault(_componentsGmaps);
+
+	var _componentsMarker = __webpack_require__(391);
+
+	var _componentsMarker2 = _interopRequireDefault(_componentsMarker);
+
+	var _componentsInfoWindow = __webpack_require__(394);
+
+	var _componentsInfoWindow2 = _interopRequireDefault(_componentsInfoWindow);
+
+	var _componentsCircle = __webpack_require__(396);
+
+	var _componentsCircle2 = _interopRequireDefault(_componentsCircle);
+
+	exports.Gmaps = _componentsGmaps2['default'];
+	exports.Marker = _componentsMarker2['default'];
+	exports.InfoWindow = _componentsInfoWindow2['default'];
+	exports.Circle = _componentsCircle2['default'];
+
+/***/ },
+/* 387 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactLibObjectAssign = __webpack_require__(14);
+
+	var _reactLibObjectAssign2 = _interopRequireDefault(_reactLibObjectAssign);
+
+	var _eventsMap = __webpack_require__(388);
+
+	var _eventsMap2 = _interopRequireDefault(_eventsMap);
+
+	var _mixinsListener = __webpack_require__(389);
+
+	var _mixinsListener2 = _interopRequireDefault(_mixinsListener);
+
+	var _utils = __webpack_require__(390);
+
+	var _utils2 = _interopRequireDefault(_utils);
+
+	var Gmaps = _react2['default'].createClass({
+	  displayName: 'Gmaps',
+
+	  mixins: [_mixinsListener2['default']],
+
+	  map: null,
+
+	  getInitialState: function getInitialState() {
+	    return {
+	      isMapCreated: false
+	    };
+	  },
+
+	  componentDidMount: function componentDidMount() {
+	    _utils2['default'].loadMaps(this.props.libraries, this.mapsCallback);
+	  },
+
+	  componentWillUnmount: function componentWillUnmount() {
+	    this.removeListeners();
+	  },
+
+	  getMap: function getMap() {
+	    return this.map;
+	  },
+
+	  mapsCallback: function mapsCallback() {
+	    this.createMap();
+	    this.addListeners(this.map, _eventsMap2['default']);
+	  },
+
+	  createMap: function createMap() {
+	    this.map = new google.maps.Map(this.getDOMNode(), _extends({}, this.props, {
+	      center: new google.maps.LatLng(this.props.lat, this.props.lng)
+	    }));
+	    this.setState({
+	      isMapCreated: true
+	    });
+	    if (this.props.onMapCreated) {
+	      this.props.onMapCreated(this.map, google.maps);
+	    }
+	  },
+
+	  getChildren: function getChildren() {
+	    var _this = this;
+
+	    return _react2['default'].Children.map(this.props.children, function (child) {
+	      if (!_react2['default'].isValidElement(child)) {
+	        return child;
+	      }
+	      return _react2['default'].cloneElement(child, {
+	        ref: child.ref,
+	        map: _this.map
+	      });
+	    });
+	  },
+
+	  render: function render() {
+	    var style = (0, _reactLibObjectAssign2['default'])({
+	      width: this.props.width,
+	      height: this.props.height
+	    }, this.props.style);
+	    return _react2['default'].createElement(
+	      'div',
+	      { style: style, className: this.props.className },
+	      this.props.loadingMessage || 'Loading...',
+	      this.state.isMapCreated ? this.getChildren() : null
+	    );
+	  }
+
+	});
+
+	exports['default'] = Gmaps;
+	module.exports = exports['default'];
+
+/***/ },
+/* 388 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	exports['default'] = {
+	  onBoundsChanged: 'bounds_changed',
+	  onCenterChanged: 'center_changed',
+	  onClick: 'click',
+	  onDblClick: 'dblclick',
+	  onDrag: 'drag',
+	  onDragEnd: 'dragend',
+	  onDragStart: 'dragstart',
+	  onHeadingChanged: 'heading_changed',
+	  onIdle: 'idle',
+	  onMapTypeIdChanged: 'maptypeid_changed',
+	  onMouseMove: 'mousemove',
+	  onMouseOut: 'mouseout',
+	  onMouseOver: 'mouseover',
+	  onProjectionChanged: 'projection_changed',
+	  onResize: 'resize',
+	  onRightClick: 'rightclick',
+	  onTilesLoaded: 'tilesloaded',
+	  onTiltChanged: 'tilt_changed',
+	  onZoomChanged: 'zoom_changed'
+	};
+	module.exports = exports['default'];
+
+/***/ },
+/* 389 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var Listener = {
+
+	  listeners: [],
+
+	  addListeners: function addListeners(entity, events) {
+	    for (var prop in this.props) {
+	      if (this.props.hasOwnProperty(prop) && events[prop]) {
+	        var addListener = google.maps.event.addListener;
+	        var listener = addListener(entity, events[prop], this.props[prop]);
+	        this.listeners.push(listener);
+	      }
+	    }
+	  },
+
+	  removeListeners: function removeListeners() {
+	    this.listeners.forEach(function (listener) {
+	      google.maps.event.removeListener(listener);
+	    });
+	  }
+
+	};
+
+	exports["default"] = Listener;
+	module.exports = exports["default"];
+
+/***/ },
+/* 390 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	exports['default'] = {
+
+	  callbacks: [],
+
+	  added: false,
+
+	  loadMaps: function loadMaps(libraries, callback) {
+	    if (!window.google) {
+	      this.callbacks.push(callback);
+	      if (!this.added) {
+	        window.mapsCallback = this.mapsCallback.bind(this);
+	        this.addScript(libraries);
+	      }
+	    } else {
+	      console.log('sss');
+	      setTimeout(callback);
+	    }
+	  },
+
+	  addScript: function addScript(libraries) {
+	    var src = 'https://maps.googleapis.com/maps/api/js';
+	    src += '?callback=mapsCallback';
+	    src += '&libraries=' + (libraries || '');
+	    var script = document.createElement('script');
+	    script.setAttribute('src', src);
+	    document.head.appendChild(script);
+	    this.added = true;
+	  },
+
+	  mapsCallback: function mapsCallback() {
+	    delete window.mapsCallback;
+	    this.callbacks.forEach(function (callback) {
+	      return callback();
+	    });
+	    this.callbacks = [];
+	  }
+
+	};
+	module.exports = exports['default'];
+
+/***/ },
+/* 391 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _entity = __webpack_require__(392);
+
+	var _entity2 = _interopRequireDefault(_entity);
+
+	var _eventsMarker = __webpack_require__(393);
+
+	var _eventsMarker2 = _interopRequireDefault(_eventsMarker);
+
+	exports['default'] = (0, _entity2['default'])('Marker', 'position', _eventsMarker2['default']);
+	module.exports = exports['default'];
+
+/***/ },
+/* 392 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _mixinsListener = __webpack_require__(389);
+
+	var _mixinsListener2 = _interopRequireDefault(_mixinsListener);
+
+	exports['default'] = function (name, latLngProp, events) {
+	  return _react2['default'].createClass({
+
+	    mixins: [_mixinsListener2['default']],
+
+	    entity: null,
+
+	    componentDidMount: function componentDidMount() {
+	      var options = this.getOptions(this.props);
+	      this.entity = new google.maps[name](options);
+	      this.addListeners(this.entity, events);
+	    },
+
+	    componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+	      var options = this.getOptions(nextProps);
+	      this.entity.setOptions(options);
+	    },
+
+	    componentWillUnmount: function componentWillUnmount() {
+	      this.entity.setMap(null);
+	      this.removeListeners();
+	      this.entity = null;
+	    },
+
+	    getEntity: function getEntity() {
+	      return this.entity;
+	    },
+
+	    getOptions: function getOptions(props) {
+	      return _extends({}, props, _defineProperty({}, latLngProp, new google.maps.LatLng(props.lat, props.lng)));
+	    },
+
+	    render: function render() {
+	      return null;
+	    }
+
+	  });
+	};
+
+	module.exports = exports['default'];
+
+/***/ },
+/* 393 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	exports['default'] = {
+	  onAnimationChanged: 'animation_changed',
+	  onClick: 'click',
+	  onClickableChanged: 'clickable_changed',
+	  onCursorChanged: 'cursor_changed',
+	  onDblClick: 'dblclick',
+	  onDrag: 'drag',
+	  onDragEnd: 'dragend',
+	  onDraggableChanged: 'draggable_changed',
+	  onDragStart: 'dragstart',
+	  onFlatChanged: 'flat_changed',
+	  onIconChanged: 'icon_changed',
+	  onMouseDown: 'mousedown',
+	  onMouseOut: 'mouseout',
+	  onMouseOver: 'mouseover',
+	  onMouseUp: 'mouseup',
+	  onPositionChanged: 'position_changed',
+	  onRightClick: 'rightclick',
+	  onShapeChanged: 'shape_changed',
+	  onTitleChanged: 'title_changed',
+	  onVisibleChanged: 'visible_changed',
+	  onZindexChanged: 'zindex_changed'
+	};
+	module.exports = exports['default'];
+
+/***/ },
+/* 394 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _entity = __webpack_require__(392);
+
+	var _entity2 = _interopRequireDefault(_entity);
+
+	var _eventsInfoWindow = __webpack_require__(395);
+
+	var _eventsInfoWindow2 = _interopRequireDefault(_eventsInfoWindow);
+
+	exports['default'] = (0, _entity2['default'])('InfoWindow', 'position', _eventsInfoWindow2['default']);
+	module.exports = exports['default'];
+
+/***/ },
+/* 395 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	exports['default'] = {
+	  onCloseClick: 'closeclick',
+	  onContentChanged: 'content_changed',
+	  onDOMReady: 'domready',
+	  onPositionChanged: 'position_changed',
+	  onZindexChanged: 'zindex_changed'
+	};
+	module.exports = exports['default'];
+
+/***/ },
+/* 396 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _entity = __webpack_require__(392);
+
+	var _entity2 = _interopRequireDefault(_entity);
+
+	var _eventsCircle = __webpack_require__(397);
+
+	var _eventsCircle2 = _interopRequireDefault(_eventsCircle);
+
+	exports['default'] = (0, _entity2['default'])('Circle', 'center', _eventsCircle2['default']);
+	module.exports = exports['default'];
+
+/***/ },
+/* 397 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	exports['default'] = {
+	  onCenterChanged: 'center_changed',
+	  onClick: 'click',
+	  onDblClick: 'dblclick',
+	  onDrag: 'drag',
+	  onDragEnd: 'dragend',
+	  onDragStart: 'dragstart',
+	  onMouseDown: 'mousedown',
+	  onMouseMove: 'mousemove',
+	  onMouseOut: 'mouseout',
+	  onMouseOver: 'mouseover',
+	  onMouseUp: 'mouseup',
+	  onRadiusChanged: 'radius_changed',
+	  onRightClick: 'rightclick'
+	};
+	module.exports = exports['default'];
+
+/***/ },
+/* 398 */
+/***/ function(module, exports, __webpack_require__) {
+
 	module.exports = function injectTapEventPlugin () {
 	  var React = __webpack_require__(2);
 	  React.initializeTouchEvents(true);
 
 	  __webpack_require__(70).injection.injectEventPluginsByName({
-	    "ResponderEventPlugin": __webpack_require__(386),
-	    "TapEventPlugin":       __webpack_require__(387)
+	    "ResponderEventPlugin": __webpack_require__(399),
+	    "TapEventPlugin":       __webpack_require__(400)
 	  });
 	};
 
 
 /***/ },
-/* 386 */
+/* 399 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -47551,7 +48252,7 @@
 
 
 /***/ },
-/* 387 */
+/* 400 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -47579,7 +48280,7 @@
 	var EventPluginUtils = __webpack_require__(5);
 	var EventPropagators = __webpack_require__(94);
 	var SyntheticUIEvent = __webpack_require__(107);
-	var TouchEventUtils = __webpack_require__(388);
+	var TouchEventUtils = __webpack_require__(401);
 	var ViewportMetrics = __webpack_require__(75);
 
 	var keyOf = __webpack_require__(40);
@@ -47723,7 +48424,7 @@
 
 
 /***/ },
-/* 388 */
+/* 401 */
 /***/ function(module, exports) {
 
 	/**

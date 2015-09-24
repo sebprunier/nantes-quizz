@@ -6,6 +6,7 @@ import mui from 'material-ui';
 import About from './pages/about'
 import Home from './pages/home'
 import PhotoQuizz from './pages/quizz_photo'
+import DistrictQuizz from './pages/quizz_district'
 
 import CustomTheme from './themes/custom'
 
@@ -89,6 +90,7 @@ React.render(
                 <IndexRoute component={Home} />
                 <Route path="about" component={About} />
                 <Route path="quizz/photo" component={PhotoQuizz} />
+                <Route path="quizz/district" component={DistrictQuizz} />
             </Route>
         </Router>
     ),

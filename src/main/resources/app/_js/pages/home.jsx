@@ -40,7 +40,9 @@ const Home = React.createClass({
                             <CardTitle title="Quartiers" subtitle="Vous devez trouver à quel quartier correspond le marqueur sur la carte"/>
                             <img src="img/1a237e-map-marker-128.png"/>
                             <CardActions>
-                                <RaisedButton label="La géographie nantaise ça me connait !" primary={true} />
+                                <Link to={'/quizz/district'}>
+                                    <RaisedButton label="La géographie nantaise ça me connait !" primary={true} />
+                                </Link>
                             </CardActions>
                         </Card>
                     </div>
