@@ -5,9 +5,10 @@ const About = React.createClass({
         return (
             <div id="about">
                 <h1>About</h1>
-                <p>
-                    Bla bla bla ...
+                <p className="about">
+                    Promis bientôt je vous donne un peu plus d'explications ... :-)
                 </p>
+                <img src="http://www.nantesdigitalweek.com/wp-content/themes/NDW/images/logo-moyen-nantes-digital-week.png" />
             </div>
         )
     }

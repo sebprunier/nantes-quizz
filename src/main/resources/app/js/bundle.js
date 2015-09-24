@@ -45796,9 +45796,10 @@
 	            ),
 	            _react2["default"].createElement(
 	                "p",
-	                null,
-	                "Bla bla bla ..."
-	            )
+	                { className: "about" },
+	                "Promis bientôt je vous donne un peu plus d'explications ... :-)"
+	            ),
+	            _react2["default"].createElement("img", { src: "http://www.nantesdigitalweek.com/wp-content/themes/NDW/images/logo-moyen-nantes-digital-week.png" })
 	        );
 	    }
 	});
