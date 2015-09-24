@@ -22,7 +22,7 @@ h1 {
     text-align: center;
 }
 
-#action-validate, #action-change, #action-new
+#action-validate, #action-change, #action-new,
 .category, .quizz-photo-card {
     margin: 16px;
 }
