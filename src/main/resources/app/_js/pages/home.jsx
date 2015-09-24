@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router'
 import mui from 'material-ui';
 import CustomTheme from '../themes/custom'
 
@@ -28,7 +29,9 @@ const Home = React.createClass({
                             <CardTitle title="Photographies" subtitle="Vous devez trouver à quel monument de Nantes correspond la photo"/>
                             <img src="img/1a237e-slr-camera-128.png"/>
                             <CardActions>
-                                <RaisedButton label="J'ai une mémoire visuelle sans faille !" primary={true} />
+                                <Link to={'/quizz/photo'}>
+                                    <RaisedButton label="J'ai une mémoire visuelle sans faille !" primary={true} />
+                                </Link>
                             </CardActions>
                         </Card>
                     </div>

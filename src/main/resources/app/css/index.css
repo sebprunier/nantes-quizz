@@ -18,10 +18,41 @@ h1 {
     text-shadow: 2px 2px 8px #1a237e;
 }
 
-#home, #about {
+#home, #about, #quizz-photo {
     text-align: center;
 }
 
-.category {
+#action-validate, #action-change, #action-new
+.category, .quizz-photo-card {
     margin: 16px;
+}
+
+.quizz-photo-card {
+    padding: 16px;
+}
+
+#choices {
+    text-align: left;
+    font-size: 1.1em;
+    margin-bottom: 32px;
+}
+
+.result-ok, .result-ko {
+    font-size: 1.2em;
+    margin-bottom: 32px;
+}
+
+.result-ok {
+    color: #1a237e;
+    font-weight: bold;
+}
+
+.result-ko {
+    color: darkred;
+    font-weight: bold;
+}
+
+#credit {
+    margin-top: 16px;
+    color: #808080;
 }

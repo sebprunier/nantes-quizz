@@ -13,6 +13,7 @@ public class App {
                 .configure(routes -> {
                     routes.add(PhotoQuizzEndpoint.class);
                     routes.get("/about", (context) -> ModelAndView.of("index"));
+                    routes.get("/quizz/photo", (context) -> ModelAndView.of("index"));
                 })
                 .start(PORT);
     }

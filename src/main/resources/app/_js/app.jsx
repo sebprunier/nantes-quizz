@@ -5,6 +5,7 @@ import mui from 'material-ui';
 
 import About from './pages/about'
 import Home from './pages/home'
+import PhotoQuizz from './pages/quizz_photo'
 
 import CustomTheme from './themes/custom'
 
@@ -23,10 +24,22 @@ let injectTapEventPlugin = require("react-tap-event-plugin");
 injectTapEventPlugin();
 
 let menuItems = [
-    {type: MenuItem.Types.SUBHEADER, text: 'Nantes Quizz'},
-    {route: '/', text: 'Je veux jouer !'},
-    {route: '/about', text: 'A propos'},
-    {type: MenuItem.Types.SUBHEADER, text: 'Liens utiles'},
+    {
+        type: MenuItem.Types.SUBHEADER,
+        text: 'Nantes Quizz'
+    },
+    {
+        route: '/',
+        text: 'Je veux jouer !'
+    },
+    {
+        route: '/about',
+        text: 'A propos'
+    },
+    {
+        type: MenuItem.Types.SUBHEADER,
+        text: 'Liens utiles'
+    },
     {
         type: MenuItem.Types.LINK,
         payload: 'https://github.com/sebprunier/nantes-quizz',
@@ -75,6 +88,7 @@ React.render(
             <Route path="/" component={App}>
                 <IndexRoute component={Home} />
                 <Route path="about" component={About} />
+                <Route path="quizz/photo" component={PhotoQuizz} />
             </Route>
         </Router>
     ),
