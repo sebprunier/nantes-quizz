@@ -18,16 +18,16 @@ h1 {
     text-shadow: 2px 2px 8px #1a237e;
 }
 
-#home, #about, #quizz-photo {
+#home, #about, #quizz-photo, #quizz-district {
     text-align: center;
 }
 
 #action-validate, #action-change, #action-new,
-.category, .quizz-photo-card {
+.category, .quizz-photo-card, .quizz-district-card {
     margin: 16px;
 }
 
-.quizz-photo-card {
+.quizz-photo-card, .quizz-district-card {
     padding: 16px;
 }
 
@@ -35,6 +35,10 @@ h1 {
     text-align: left;
     font-size: 1.1em;
     margin-bottom: 32px;
+}
+
+#map {
+    margin-right: 32px;
 }
 
 .result-ok, .result-ko {

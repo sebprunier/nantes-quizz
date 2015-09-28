@@ -47341,7 +47341,7 @@
 	        if (!this.state.quizz) {
 	            return _react2['default'].createElement(
 	                'div',
-	                { id: 'quizz-photo' },
+	                { id: 'quizz-district' },
 	                _react2['default'].createElement(
 	                    'h1',
 	                    null,
@@ -47351,7 +47351,7 @@
 	        } else {
 	            return _react2['default'].createElement(
 	                'div',
-	                { id: 'quizz-photo' },
+	                { id: 'quizz-district' },
 	                _react2['default'].createElement(
 	                    'h1',
 	                    null,
@@ -47359,7 +47359,7 @@
 	                ),
 	                _react2['default'].createElement(
 	                    Card,
-	                    { className: 'quizz-photo-card' },
+	                    { className: 'quizz-district-card' },
 	                    _react2['default'].createElement(
 	                        'div',
 	                        { className: 'pure-g' },
@@ -47367,18 +47367,23 @@
 	                            'div',
 	                            { className: 'pure-u-1 pure-u-md-1-2' },
 	                            _react2['default'].createElement(
-	                                _reactGmaps.Gmaps,
-	                                {
-	                                    width: '800px',
-	                                    height: '600px',
-	                                    lat: 47.2172500,
-	                                    lng: -1.5533600,
-	                                    zoom: 12,
-	                                    loadingMessage: 'Chargement ...' },
-	                                _react2['default'].createElement(_reactGmaps.Marker, {
-	                                    lat: parseFloat(this.state.quizz.districtInfoLat),
-	                                    lng: parseFloat(this.state.quizz.districtInfoLon),
-	                                    draggable: false })
+	                                'div',
+	                                { id: 'map' },
+	                                _react2['default'].createElement(
+	                                    _reactGmaps.Gmaps,
+	                                    {
+	                                        ref: 'gmaps',
+	                                        height: '600px',
+	                                        lat: parseFloat(this.state.quizz.districtInfoLat),
+	                                        lng: parseFloat(this.state.quizz.districtInfoLon),
+	                                        zoom: 13,
+	                                        loadingMessage: 'Chargement ...',
+	                                        onMapCreated: this._onMapCreated },
+	                                    _react2['default'].createElement(_reactGmaps.Marker, {
+	                                        lat: parseFloat(this.state.quizz.districtInfoLat),
+	                                        lng: parseFloat(this.state.quizz.districtInfoLon),
+	                                        draggable: false })
+	                                )
 	                            )
 	                        ),
 	                        _react2['default'].createElement(
@@ -47419,6 +47424,12 @@
 	                )
 	            );
 	        }
+	    },
+	    _onMapCreated: function _onMapCreated(map) {
+	        map.setOptions({
+	            disableDefaultUI: true,
+	            mapTypeId: google.maps.MapTypeId.HYBRID
+	        });
 	    },
 	    _loadNewQuizz: function _loadNewQuizz() {
 	        var _this = this;
@@ -47539,6 +47550,12 @@
 
 	  componentWillUnmount: function componentWillUnmount() {
 	    this.removeListeners();
+	  },
+
+	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+	    this.map.setOptions(_extends({}, nextProps, {
+	      center: new google.maps.LatLng(nextProps.lat, nextProps.lng)
+	    }));
 	  },
 
 	  getMap: function getMap() {
@@ -47684,7 +47701,6 @@
 	        this.addScript(libraries);
 	      }
 	    } else {
-	      console.log('sss');
 	      setTimeout(callback);
 	    }
 	  },

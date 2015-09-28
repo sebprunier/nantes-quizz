@@ -79,29 +79,32 @@ const DistrictQuizz = React.createClass({
 
         if (!this.state.quizz) {
             return (
-                <div id="quizz-photo">
+                <div id="quizz-district">
                     <h1>Quartiers</h1>
                 </div>
             )
         } else {
             return (
-                <div id="quizz-photo">
+                <div id="quizz-district">
                     <h1>Quartiers</h1>
-                    <Card className="quizz-photo-card">
+                    <Card className="quizz-district-card">
                         <div className="pure-g">
                             <div className="pure-u-1 pure-u-md-1-2">
-                                <Gmaps
-                                    width={'800px'}
-                                    height={'600px'}
-                                    lat={47.2172500}
-                                    lng={-1.5533600}
-                                    zoom={12}
-                                    loadingMessage={'Chargement ...'}>
-                                    <Marker
+                                <div id="map">
+                                    <Gmaps
+                                        ref="gmaps"
+                                        height={'600px'}
                                         lat={parseFloat(this.state.quizz.districtInfoLat)}
                                         lng={parseFloat(this.state.quizz.districtInfoLon)}
-                                        draggable={false}/>
-                                </Gmaps>
+                                        zoom={13}
+                                        loadingMessage={'Chargement ...'}
+                                        onMapCreated={this._onMapCreated}>
+                                        <Marker
+                                            lat={parseFloat(this.state.quizz.districtInfoLat)}
+                                            lng={parseFloat(this.state.quizz.districtInfoLon)}
+                                            draggable={false}/>
+                                    </Gmaps>
+                                </div>
                             </div>
                             <div className="pure-u-1 pure-u-md-1-2">
                                 <h2>Quel est ce quartier &#63;</h2>
@@ -132,6 +135,12 @@ const DistrictQuizz = React.createClass({
                 </div>
             )
         }
+    },
+    _onMapCreated(map) {
+        map.setOptions({
+            disableDefaultUI: true,
+            mapTypeId: google.maps.MapTypeId.HYBRID
+        });
     },
     _loadNewQuizz() {
         Axios.get('/api/quizz/district/new').then(quizz => this.setState({
